@@ -4,7 +4,7 @@ These tools (`mkdo`, `mkpy`, `whip`) simplify creation and deplyment of python c
 
 The old idea of using hashbang to make python scripts executable has a few problems, such as divergent import semantics. Python code should be found using the `import` mechanism. Executable code should be found in directories in `PATH`, usually named `.../bin`. Thus `python3 -m module` is better than `python3 .../module.py`.
 
-The desired policy is trivial to implement: the following script wraps any python module as a command: `python3 -m `basename "$0"` "$@"` placing a copy of this script in a suitable bin directory deploys the python module as a command, given that the module is visible to the import machanism.
+The desired policy is trivial to implement: the following script wraps any python module as a command: ```python3 -m `basename "$0"` "$@"``` placing a copy of this script in a suitable bin directory deploys the python module as a command, given that the module is visible to the import machanism.
 
 Once you have your defaults configures, to create a new python command:
 
