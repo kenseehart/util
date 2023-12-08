@@ -1,18 +1,3 @@
-
-##########################################################################
-# Copyright Facebook, Inc. and its affiliates. All Rights Reserved.
-# NOTICE OF CONFIDENTIAL AND PROPRIETARY INFORMATION & TECHNOLOGY:
-# The information and technology contained herein (including the accompanying
-# binary code) is the confidential information of Facebook Inc. and its
-# affiliates (collectively, "FB"). It is protected by applicable copyright and
-# trade secret law, and may be claimed in one or more U.S. or foreign patents
-# or pending patent applications. FB retains all right, title and interest
-# (including all intellectual property rights) in such information and
-# technology, and no licenses are hereby granted by FB. Unauthorized
-# use, reproduction, or dissemination is a violation of FB's rights and is
-# strictly prohibited.
-##########################################################################
-
 '''Create a python module boilerplate implementation of a command
 
 - Recommended: use `mkdo` to install the command

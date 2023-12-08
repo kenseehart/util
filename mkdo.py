@@ -17,23 +17,24 @@ $ mycommand ...args...
 
 '''
 
-# install-me # <- This command will be installed by the install script
+# install-me # <- This command will be installed by the setup script
 
 import argparse
 import sys, os
-from os.path import basename, dirname, splitext, join, exists, isdir, islink
+from os.path import basename, dirname, splitext, join, exists, isdir, islink, abspath
 import subprocess
 
 this_name = splitext(basename(__file__))[0]
 
 def mkdo(name:str, bin_dir:str=None):
     bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
-    bin_name = join(bin_dir, name)
+    print ('installing', name, 'in', bin_dir)
+    bin_name = abspath(join(bin_dir, name))
 
     if exists(bin_name):
         os.unlink(bin_name)
 
-    src = 'python3 -m `basename "$0"` "$@"\n'
+    src = 'python -m `basename "$0"` "$@"\n'
 
     with open(bin_name, 'w') as f:
         f.write(src)

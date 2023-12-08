@@ -2,13 +2,13 @@
 
 import os
 from logging import FileHandler
-from os.path import exists, join
+from os.path import exists, join, split
 from typing import Any, Dict, Callable, NoReturn
 import unittest
 import tempfile
 import time
-from cv2 import split
 import yaml
+import threading
 
 from filelock import Timeout, FileLock # pip3 install filelock
 import monitor
@@ -97,7 +97,7 @@ class Yamster:
         with self._lock:
             with open(self._filename, 'w') as f:
                 yaml.safe_dump(self._content, f)
-    
+
     def __getattr__(self, name: str) -> Any:
         if name.startswith('_'):
             return super().__getattr__(name)
@@ -134,7 +134,7 @@ class Yamster:
     __setitem__ = __setattr__
     __delitem__ = __delattr__
 
-        
+
 class TestYamster(unittest.TestCase):
     def test_yamster(self):
         def cb(k, v0, v1):
