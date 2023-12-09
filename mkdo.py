@@ -29,12 +29,17 @@ this_name = splitext(basename(__file__))[0]
 def mkdo(name:str, bin_dir:str=None):
     bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
     print ('installing', name, 'in', bin_dir)
+
+    if '.' in name:
+        package, name = name.split('.')
+        src = f'python -m {package}.`basename "$0"` "$@"\n'
+    else:
+        src = 'python -m `basename "$0"` "$@"\n'
+
     bin_name = abspath(join(bin_dir, name))
 
     if exists(bin_name):
         os.unlink(bin_name)
-
-    src = 'python -m `basename "$0"` "$@"\n'
 
     with open(bin_name, 'w') as f:
         f.write(src)
