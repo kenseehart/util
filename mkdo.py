@@ -30,11 +30,11 @@ def mkdo(name:str, bin_dir:str=None):
     try:
         bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
     except subprocess.CalledProcessError:
-        # are we in a virtualenv?
-        if 'VIRTUAL_ENV' in os.environ:
+        # are we in a virtualenv or conda environment?
+        if 'VIRTUAL_ENV' in os.environ or 'CONDA_PREFIX' in os.environ:
             bin_dir = split(sys.executable)[0]
         else:
-            raise Exception(f'not in virtual environment, so please use python -m {this_name} mkdo mkdo -d mybinpath')
+            raise Exception(f'not in virtual or conda environment, so please use python -m {this_name} mkdo mkdo -d mybinpath')
 
     print ('installing', name, 'in', bin_dir)
 

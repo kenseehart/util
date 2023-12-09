@@ -15,8 +15,7 @@ with open('requirements.txt') as f:
 setup(
     name=basename(dirname(__file__)),
     version='0.1',
-    package_dir={'': '.'},
-    packages=find_packages('util'),
+    packages=find_packages(),
     install_requires=requirements,
 )
 
