@@ -1,7 +1,6 @@
 'Yaml store'
 
 import os
-from logging import FileHandler
 from os.path import exists, join, split
 from typing import Any, Dict, Callable, NoReturn
 import unittest
@@ -11,7 +10,6 @@ import yaml
 import threading
 
 from filelock import Timeout, FileLock # pip3 install filelock
-import monitor
 
 class Yamster:
     _filename:str
