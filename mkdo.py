@@ -21,13 +21,21 @@ $ mycommand ...args...
 
 import argparse
 import sys, os
-from os.path import basename, dirname, splitext, join, exists, isdir, islink, abspath
+from os.path import basename, dirname, split, splitext, join, exists, isdir, islink, abspath
 import subprocess
 
 this_name = splitext(basename(__file__))[0]
 
 def mkdo(name:str, bin_dir:str=None):
-    bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
+    try:
+        bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
+    except subprocess.CalledProcessError:
+        # are we in a virtualenv?
+        if 'VIRTUAL_ENV' in os.environ:
+            bin_dir = split(sys.executable)[0]
+        else:
+            raise Exception(f'not in virtual environment, so please use python -m {this_name} mkdo mkdo -d mybinpath')
+
     print ('installing', name, 'in', bin_dir)
 
     if '.' in name:
