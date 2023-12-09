@@ -70,6 +70,8 @@ cd .../asap # directory containing your repo clones
 git clone git@192.168.115.252:asap/util.git
 cd util
 ./install-util
+
+python -m util.mkdo_setup
 ```
 
 This will ask for:
