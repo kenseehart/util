@@ -71,6 +71,8 @@ def mkpy(name:str, py_dir=None):
     with open(py_name, 'w') as f:
         f.write(src)
 
+    return py_name
+
 
 
 def main():
