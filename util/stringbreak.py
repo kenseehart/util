@@ -1,7 +1,7 @@
 '''
 String Break
 
-A small collection of monky-patch hacks that let you do things you aren't supposed to do.
+A small collection of monkey-patch hacks that let you do things you aren't supposed to do.
 
 Use with caution!
 
@@ -9,7 +9,7 @@ Best use case: make extreme debugging tools.
 
 - wbp: break (or do something else) when anything writes the specified string to any file
 - abp: break (or do something else) on attribute access globally
-- alias_attr: alias an attribute on all objects
+- alias_attr: alias an attribute on all objects everywhere
 
 Set a global breakpoint on writing a specified string, or appending to a list
 
@@ -42,7 +42,7 @@ wbp('spam')
 
 Set a breakpoint in WBPContext.check_string() in this file
 
-When any code writes a specified string to a file, StringIO, or list, the breakpoint will be triggered.
+When any code writes a specified string to a stream, file, StringIO, or list, the breakpoint will be triggered.
 
 '''
 
@@ -247,6 +247,3 @@ wbp_context = WBPContext()
 
 sbp = wbp_context.sbp
 cbp = wbp_context.cbp
-
-
-
