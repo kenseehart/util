@@ -1,20 +1,29 @@
+r'''Install a Python module as an executable command
 
-r'''install a python module as a command in the bin directory
+`mkdo` creates executable command wrappers for Python modules.
 
-To install this the first time:
+This is preferable to the common practice of using `#!/usr/bin/env python` and making
+a script executable. We recommend deprecating that practice in favor of `mkdo`.
 
-$ python3 mkdo.py mkdo my/bin/directory
+Using python -m unifies import semantics. Removing .py from the command name makes it
+more user-friendly.
 
-Now mkdo is a command, and my/bin/directory is the default location for new commands.
+USAGE:
 
-To install a python module (must be locatable by import) as a command:
+  Initial setup:
+  $ python3 mkdo.py mkdo /path/to/bin
 
-$ mkdo mycommand
+  This installs mkdo itself as a command, with /path/to/bin as the
+  default location for new commands.
 
-Then you can run your command:
+  Creating commands:
+  $ mkdo module_name        # Creates a command for a standard module
+  $ mkdo package.module     # Creates a command for a module in a package
 
-$ mycommand ...args...
+  The created command can be run directly:
+  $ module_name [arguments]
 
+mkdo requires that the module be importable from the current Python environment.
 '''
 
 # install-me # <- This command will be installed by the setup script
@@ -57,8 +66,12 @@ def mkdo(name:str, bin_dir:str=None):
     return bin_name
 
 def main():
-    parser = argparse.ArgumentParser(prog=this_name, description=__doc__)
-    parser.add_argument('name', help='command name (python module name) or .wrapper to convert wrappers')
+    parser = argparse.ArgumentParser(
+        prog=this_name,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument('name', help='command name (Python module name, or package.module format)')
     parser.add_argument('-d', help=f'bin directory (default=location of {this_name} command)')
 
     args = parser.parse_args()
@@ -72,4 +85,3 @@ def main():
 
 if __name__=='__main__':
     main()
-
