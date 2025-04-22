@@ -47,7 +47,7 @@ def mkdo(name:str, bin_dir:str=None):
             for sub in submodules:
                 full_sub = f"{name}.{sub}"
                 try:
-cd                     result = mkdo(full_sub, bin_dir)
+                    result = mkdo(full_sub, bin_dir)
                     results.append(result)
                 except Exception as e:
                     print(f"[mkdo] Failed to mkdo {full_sub}: {e}", file=sys.stderr)
