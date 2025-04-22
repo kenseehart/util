@@ -32,10 +32,30 @@ import argparse
 import sys, os
 from os.path import basename, dirname, split, splitext, join, exists, isdir, islink, abspath
 import subprocess
+import importlib
 
 this_name = splitext(basename(__file__))[0]
 
 def mkdo(name:str, bin_dir:str=None):
+    # Try to import the module to check for _mkdo_modules
+    try:
+        module = importlib.import_module(name)
+        submodules = getattr(module, '_mkdo_modules', None)
+        if submodules:
+            print(f"[mkdo] Expanding '{name}' to submodules: {submodules}")
+            results = []
+            for sub in submodules:
+                full_sub = f"{name}.{sub}"
+                try:
+cd                     result = mkdo(full_sub, bin_dir)
+                    results.append(result)
+                except Exception as e:
+                    print(f"[mkdo] Failed to mkdo {full_sub}: {e}", file=sys.stderr)
+            return results
+    except Exception as e:
+        print(f"[mkdo] Failed to import module {name}: {e}", file=sys.stderr)
+        pass
+
     try:
         bin_dir = bin_dir or dirname(subprocess.check_output(['which', this_name]).decode())
     except subprocess.CalledProcessError:
@@ -78,7 +98,11 @@ def main():
 
     try:
         r = mkdo(args.name, args.d)
-        print (r)
+        if isinstance(r, list):
+            for result in r:
+                print(result)
+        else:
+            print(r)
     except Exception as e: # Best if replaced with explicit exception
         print (e, file=sys.stderr)
         exit(1)
