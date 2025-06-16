@@ -1,1 +1,1 @@
-_mkdo_modules = ['mkdo', 'mkws', 'wsrv', 'mkpy']
+_mkdo_modules = ['mkdo', 'mkws', 'mkpy', 'whip']
