@@ -1,0 +1,1 @@
+python -m {package_prefix}`basename "$0"` "$@"

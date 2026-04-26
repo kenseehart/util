@@ -17,6 +17,8 @@ setup(
     name='util',
     version='0.1',
     packages=find_packages(),
+    package_data={'util': ['mkdo_templates/*']},
+    include_package_data=True,
     install_requires=requirements,
 )
 
