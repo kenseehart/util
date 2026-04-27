@@ -58,7 +58,7 @@ this_name = splitext(basename(__file__))[0]
 DEFAULT_TEMPLATE = 'default'
 
 
-def _resolve_bin_dir(bin_dir: str = None) -> str:
+def _resolve_bin_dir(bin_dir: str|None=None) -> str:
     if bin_dir:
         return bin_dir
     try:
@@ -96,7 +96,7 @@ def _render_template(template_path: str, **ctx: str) -> str:
     return body.format(**ctx)
 
 
-def mkdo(name: str, bin_dir: str = None, template: str = DEFAULT_TEMPLATE):
+def mkdo(name: str, bin_dir: str|None=None, template: str = DEFAULT_TEMPLATE):
     if template == DEFAULT_TEMPLATE:
         # Recurse into _mkdo_modules if the imported module declares any.
         try:
