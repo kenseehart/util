@@ -13,6 +13,7 @@ Old-school Python CLI utilities deployed via wrapper scripts:
 | `whip` | Locate a Python module (like `which` for imports) |
 | `mkdo` | Install a module as an executable in `bin/` |
 | `mkpy` | Scaffold a new command module |
+| `mkdo_setup` | Bootstrap whip/mkdo/mkpy into a venv (`python -m util.mkdo_setup`) |
 | `gmon` | Reactive directory monitor |
 | `stringbreak` | Break debugger on matching output string |
 | `yamster` | Reactive YAML store |
@@ -28,9 +29,12 @@ Installed in `~/.local/share/uv/global` with editable package + mkdo wrappers:
 
 ```bash
 whip util.whip    # should print path to whip.py
+whip host.cli     # locate a project's CLI module before mkdo
 mkpy mytool       # create new command module
-mkdo mytool       # deploy to global bin
+mkdo mytool       # deploy to bin/
 ```
+
+After `uv sync` in a project venv: `uv run python -m util.mkdo_setup` then `mkdo <package> -d .venv/bin`. Prefer the installed command (`host deploy`) over `uv run python -m …`.
 
 Reinstall after clone:
 

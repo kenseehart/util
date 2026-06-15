@@ -22,15 +22,18 @@ def get_package_from_script(module_name):
 
         script_path = which_result.stdout.strip()
 
-        # Read the script to extract the package
-        cat_result = subprocess.run(['cat', script_path], capture_output=True, text=True)
-        if cat_result.returncode != 0:
+        # Skip non-text executables (e.g. /usr/bin/host DNS tool vs python -m wrapper)
+        try:
+            with open(script_path, "rb") as f:
+                head = f.read(256)
+            if b"python -m " not in head:
+                return None
+            script_content = head.decode("utf-8", errors="ignore")
+        except OSError:
             return None
 
-        script_content = cat_result.stdout.strip()
-
         # Parse the content to find the package
-        if 'python -m ' in script_content:
+        if "python -m " in script_content:
             # Extract the package name (e.g., 'util' from 'python -m util.`basename "$0"`')
             parts = script_content.split('python -m ')[1].split('.')[0]
             return parts
