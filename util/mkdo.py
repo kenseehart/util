@@ -56,6 +56,17 @@ from os.path import abspath, basename, dirname, exists, join, split, splitext
 this_name = splitext(basename(__file__))[0]
 
 DEFAULT_TEMPLATE = 'default'
+MODULE_TEMPLATES = frozenset({DEFAULT_TEMPLATE, 'global'})
+
+
+def _module_context(name: str) -> tuple[str, dict[str, str]]:
+    if '.' in name:
+        package, leaf = name.rsplit('.', 1)
+        package_prefix = f'{package}.'
+    else:
+        leaf = name
+        package_prefix = ''
+    return leaf, {'package_prefix': package_prefix, 'name': leaf}
 
 
 def _resolve_bin_dir(bin_dir: str|None=None) -> str:
@@ -97,7 +108,7 @@ def _render_template(template_path: str, **ctx: str) -> str:
 
 
 def mkdo(name: str, bin_dir: str|None=None, template: str = DEFAULT_TEMPLATE):
-    if template == DEFAULT_TEMPLATE:
+    if template in MODULE_TEMPLATES:
         # Recurse into _mkdo_modules if the imported module declares any.
         try:
             module = importlib.import_module(name)
@@ -119,15 +130,8 @@ def mkdo(name: str, bin_dir: str|None=None, template: str = DEFAULT_TEMPLATE):
 
     bin_dir = _resolve_bin_dir(bin_dir)
 
-    if template == DEFAULT_TEMPLATE:
-        if '.' in name:
-            package, leaf = name.rsplit('.', 1)
-            package_prefix = f'{package}.'
-        else:
-            leaf = name
-            package_prefix = ''
-        bin_name = leaf
-        ctx = {'package_prefix': package_prefix, 'name': leaf}
+    if template in MODULE_TEMPLATES:
+        bin_name, ctx = _module_context(name)
     else:
         # Non-default templates: name is the literal command. Templates that
         # need the name embed it via `basename "$0"` or via the {name} field.

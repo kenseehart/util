@@ -25,22 +25,34 @@ Old-school Python CLI utilities deployed via wrapper scripts:
 
 ## Installation (global editable)
 
-Installed in `~/.local/share/uv/global` with editable package + mkdo wrappers:
+All lightweight workspace projects install into **`~/.local/share/uv/global`**. Refresh everything:
 
 ```bash
-whip util.whip    # should print path to whip.py
-whip host.cli     # locate a project's CLI module before mkdo
-mkpy mytool       # create new command module
-mkdo mytool       # deploy to bin/
+global_setup    # python -m util.global_setup
 ```
 
-After `uv sync` in a project venv: `uv run python -m util.mkdo_setup` then `mkdo <package> -d .venv/bin`. Prefer the installed command (`host deploy`) over `uv run python -m …`.
+Or manually:
+
+```bash
+uv pip install -e /home/ken/util --python ~/.local/share/uv/global/bin/python
+mkdo_setup
+mkdo mytool -d ~/.local/bin -t global
+```
+
+| Command | Purpose |
+|---------|---------|
+| `whip` | Locate a Python module (like `which` for imports) |
+| `mkdo` | Install a module as an executable in `bin/` |
+| `mkpy` | Scaffold a new command module |
+| `mkdo_setup` | Bootstrap whip/mkdo/mkpy/global_setup into global bin |
+| `global_setup` | Install all workspace packages + CLIs (see `global_setup.py`) |
+
+After `uv sync` in a **project venv** (optional isolated dev): `uv run python -m util.mkdo_setup` then `mkdo <package> -d .venv/bin`. Prefer global env for daily use.
 
 Reinstall after clone:
 
 ```bash
-uv pip install -e /home/ken/util --python ~/.local/share/uv/global/bin/python
-~/.local/share/uv/global/bin/python -m util.mkdo_setup
+global_setup
 ```
 
 ## Conventions
