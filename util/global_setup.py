@@ -8,7 +8,7 @@ from pathlib import Path
 
 from util.mkdo import mkdo
 
-WORKSPACE = Path("/home/ken")
+WORKSPACE = Path.home() / "ws"
 GLOBAL_PYTHON = Path.home() / ".local/share/uv/global/bin/python"
 LOCAL_BIN = Path.home() / ".local/bin"
 GLOBAL_BIN = GLOBAL_PYTHON.parent
@@ -19,6 +19,7 @@ EDITABLE_PACKAGES = [
     WORKSPACE / "util",
     WORKSPACE / "shared/cmdline",
     WORKSPACE / "shared/mcp",
+    WORKSPACE / "compute",
     WORKSPACE / "fish",
     WORKSPACE / "host",
     WORKSPACE / "nfnc",
@@ -29,6 +30,9 @@ EDITABLE_PACKAGES = [
 # mkdo module → command name (default: leaf module name)
 COMMANDS: list[str | tuple[str, str]] = [
     "fish",
+    "compute",
+    "util.wsl_link",
+    "util.init_workspace",
     "host.sitehost",
     "nfnc",
     "cristopoly.fetch_streetview",
@@ -36,6 +40,7 @@ COMMANDS: list[str | tuple[str, str]] = [
     "cristopoly.sync_board_photos",
     "cristopoly.sync_property_names",
     "cristopoly.apply_streetview",
+    "cristopoly.hollow_pieces",
 ]
 
 

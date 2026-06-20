@@ -1,0 +1,24 @@
+---
+description: Tell the user when MCP, CLI, or other tools fail — do not silently fall back
+alwaysApply: true
+---
+
+# Report tool failures
+
+When an MCP tool, CLI command, API call, or other agent tool **fails**, **tell the user explicitly**. Do not silently switch to a weaker substitute without mentioning the failure.
+
+## Do
+
+- State what tool failed, the error message, and what you did instead (if anything).
+- Fix broken tools when the user asked for that capability (e.g. RAG search failing → fix `vector_search`, then retry).
+- Prefer fixing the tool over hand-rolling a workaround that bypasses it.
+
+## Do not
+
+- Ignore errors and answer from SQL/grep/memory when the user expected the tool to work.
+- Bury failures in prose — call them out clearly.
+- Retry the same failing call repeatedly without new evidence.
+
+## Example
+
+> I tried `fish_search` (RAG) but it failed: `OperationalError: A LIMIT or 'k = ?' constraint is required on vec0 knn queries`. I used SQL instead for this answer. I'll fix vector search now.

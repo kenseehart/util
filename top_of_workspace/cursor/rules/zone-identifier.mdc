@@ -1,0 +1,17 @@
+---
+description: Delete Windows Zone.Identifier ADS files when one is open in the editor
+globs: "**/*Zone.Identifier*"
+alwaysApply: false
+---
+
+# Zone.Identifier files
+
+`Zone.Identifier` files are Windows alternate-data-stream markers left when files are copied from the internet (common in WSL). They appear as paths like `file.py:Zone.Identifier`.
+
+**Delete immediately.** Do not commit, edit, or reference them.
+
+```bash
+find /home/ken -name '*Zone.Identifier*' -delete
+```
+
+Note: agents usually discover these via directory listings, not by having the file open — see the workspace rule anti-patterns bullet for the always-on reminder.

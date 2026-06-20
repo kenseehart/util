@@ -1,0 +1,62 @@
+---
+description: Fail fast — fix root causes; no silent fallbacks
+alwaysApply: true
+---
+
+# Fail fast
+
+When something is missing, misconfigured, or wrong, **fail immediately with a clear error**. Do not paper over it with fallbacks, degraded modes, or lazy optional imports.
+
+## Do
+
+- Declare dependencies in `pyproject.toml` and install them (`uv sync`, `global_setup`).
+- Import required modules at module level so `ImportError` surfaces at startup.
+- Raise explicit errors (`RuntimeError`, `ValueError`) with actionable messages.
+- Fix the root cause: install the package, set the env var, create the config file.
+
+## Do not
+
+- Lazy-import a required dependency “so it still works without it”.
+- Catch broad `Exception` and continue with a weaker code path.
+- Substitute guesses (char truncation when token counting is required, empty defaults, silent skips).
+- Add “just in case” fallback logic instead of making the primary path correct.
+
+## Examples
+
+```python
+# BAD — hides missing tiktoken
+try:
+    import tiktoken
+except ImportError:
+    tiktoken = None
+
+def truncate(text):
+    if tiktoken is None:
+        return text[:8192]  # wrong semantics, silent degradation
+```
+
+```python
+# GOOD — dependency is required; install it
+import tiktoken
+
+def truncate(text):
+    tokens = tiktoken.get_encoding("cl100k_base").encode(text)
+    ...
+```
+
+```python
+# BAD — swallows misconfiguration
+try:
+    client = connect()
+except Exception:
+    client = None  # app limps along broken
+```
+
+```python
+# GOOD
+client = connect()  # let ConnectionError propagate
+```
+
+## When a fallback is acceptable
+
+Only when the user explicitly asks for graceful degradation, or the domain genuinely requires it (retries for transient network errors, optional features clearly marked optional in the API). Never use fallbacks to avoid installing a dependency or fixing config.

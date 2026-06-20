@@ -1,0 +1,42 @@
+---
+description: Ken workspace layout, shared resources, and cross-project conventions
+alwaysApply: true
+---
+
+# Workspace (`/home/ken/ws`)
+
+Multi-repo workspace for Ken Seehart (ken@agi.green). Cursor root is `/home/ken/ws`.
+
+## Before coding
+
+1. Read **`/home/ken/ws/AGENTS.md`** for the project map
+2. Read the target project's **`AGENTS.md`**
+3. For shared UI/MCP/templates, read **`/home/ken/ws/shared/AGENTS.md`**
+
+## Shared layer
+
+**`/home/ken/ws/shared`** holds cross-project assets:
+
+- `web/chat/` — Claude-style chat widget (zero build)
+- `templates/` — AGENTS.md and rule starters
+- `mcp/starter_server.py` — FastMCP boilerplate
+- `mcp/github/` — shared GitHub MCP (issues, PRs, repos)
+
+Do not add RabbitMQ, Vue, or Docker requirements for new web work.
+
+## MCP
+
+Local servers: `/home/ken/ws/.cursor/mcp.json`. Remote (Claude mobile): OAuth HTTP on my.hosting.com — pattern in `tesla/`.
+
+## Python / CLI
+
+Shared uv env: **`~/.local/share/uv/global`** + command wrappers in **`~/.local/bin`**. Run **`global_setup`** after clone or when adding a project, then **`init_workspace --force`** for Cursor rules and root AGENTS.md symlinks. **`daime`** keeps its own `.venv` (GPU). See **`cli-commands`** rule and **`/home/ken/ws/AGENTS.md`**.
+
+Global tools from `/home/ken/ws/util`: `whip`, `mkdo`, `mkpy`, `global_setup`.
+
+## Anti-patterns
+
+- WIX / heavy CMS for personal sites
+- Rebuilding agi.green's full stack for simple chat UIs
+- Monorepo merging unrelated projects
+- Leaving `*:Zone.Identifier` files (Windows download markers in WSL) — delete on sight

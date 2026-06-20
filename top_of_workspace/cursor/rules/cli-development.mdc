@@ -1,0 +1,96 @@
+---
+description: CLI development with shared cmdline package (@cmd decorator pattern)
+globs: "**/cli.py,**/cli_*.py,shared/cmdline/**"
+alwaysApply: false
+---
+
+# CLI development (cmdline)
+
+Use the shared **`cmdline`** package (`/home/ken/ws/shared/cmdline`) for project CLIs. Do not hand-roll argparse subparsers per command.
+
+## Pattern
+
+```python
+from cmdline import cmd, create_parser, optarg, run_cli, cmds
+
+@cmd
+def my_command(name: str, limit: int = optarg(10, long_flag="--limit", help="Max items")) -> int:
+    """Short help line becomes argparse description."""
+    ...
+    return 0
+
+def main(argv=None):
+    parser = create_parser(cmds(sys.modules[__name__]), prog="mytool", description="...")
+    return run_cli(parser, argv)
+```
+
+## Rules
+
+1. **One module** — e.g. `src/<pkg>/cli.py`; install with `mkdo <pkg> -d ~/.local/bin -t global` as the top-level command name (`fish`, not `fish-cli`).
+2. **`@cmd` on functions** — function name → subcommand (`connect` → `fish connect`). First line of docstring → help text.
+3. **Parameters** — no default = positional arg; `optarg(...)` = optional `--flag`; type hints drive `argparse` types.
+4. **Return codes** — return `int` exit code (0 ok); raise only for unexpected failures.
+5. **Logging** — global `-v` / `--verbose` is built into `create_parser`; use `logging` in commands.
+6. **Business logic** — keep I/O and argparse in `cli.py`; put work in sibling modules (`connect.py`, `sync.py`, …).
+7. **Output** — structured commands use `@cmd(output=True)` plus `emit_output(data, json_output=..., md=...)`. Default is `format_grid` (plain text); `--md` uses markdown tables; `--json` prints JSON. MCP tools use `json_dumps()` from cmdline.
+8. **Legacy** — `shared/commandline.py` is a deprecated shim; import `from cmdline import ...` directly.
+
+## Structured output
+
+```python
+from cmdline import cmd, emit_output
+
+@cmd(output=True)
+def status(*, json_output: bool = False, md_output: bool = False) -> int:
+    """Show status."""
+    payload = build_status()
+    emit_output(payload, json_output=json_output, md=md_output, title="Fish status")
+    return 0
+```
+
+Commands without `@cmd(output=True)` do not expose `--json` / `--md`. MCP tool handlers should return `format_for_agent(...)` (not hand-rolled JSON).
+
+## MCP structured output
+
+MCP tools that return tabular or structured data should accept:
+
+| Parameter | Values | Default |
+|-----------|--------|---------|
+| `format` | `text`, `md`, `json` | `text` |
+| `columns` | comma-separated header names | all keys (or command preset) |
+
+```python
+from cmdline import format_for_agent, parse_columns
+
+@mcp.tool()
+def my_inventory(format: str = "text", columns: str | None = None) -> str:
+    rows = build_rows()
+    return format_for_agent(
+        rows,
+        format=format,
+        title="My inventory",
+        columns=parse_columns(columns),
+    )
+```
+
+- **`text`** — aligned columns via `format_grid` (default for human chat)
+- **`md`** — markdown pipe table
+- **`json`** — list of dicts; `columns` filters keys and order
+
+CLI equivalents: `@cmd(output=True)` with `--json` / `--md`, plus `--columns` where useful.
+
+## Install
+
+Add to project `pyproject.toml`:
+
+```toml
+dependencies = ["cmdline"]
+[tool.uv.sources]
+cmdline = { path = "../shared/cmdline", editable = true }
+```
+
+## Do not
+
+- Add `[project.scripts]` entry points (use `mkdo` per workspace convention)
+- Duplicate argparse setup in every subcommand module
+- Put secrets on the command line (use env files + interactive `getpass`)

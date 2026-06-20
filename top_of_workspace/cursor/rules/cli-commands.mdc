@@ -1,0 +1,84 @@
+---
+description: Python CLI commands — mkdo wrappers, whip, src layout; prefer command names over python -m
+alwaysApply: true
+---
+
+# CLI commands (mkdo)
+
+Use **`mkdo`** from `/home/ken/ws/util` to install Python commands. Do not create `scripts/` dirs or `#!/usr/bin/env python3` entrypoints.
+
+## Shared global environment (default)
+
+All lightweight workspace CLIs live in **`~/.local/share/uv/global`** (packages) and **`~/.local/bin`** (wrappers). No per-project venv activation needed.
+
+```bash
+global_setup              # refresh all projects + commands (after clone or new project)
+fish sync
+sitehost deploy --dry-run
+```
+
+**`daime`** is the exception — keep its own `.venv` (GPU deps).
+
+Wrappers in `~/.local/bin` use the **`global`** mkdo template (pinned interpreter):
+
+```sh
+exec "$HOME/.local/share/uv/global/bin/python" -m package.module "$@"
+```
+
+## Prefer `<command>` over `uv run python -m …`
+
+```bash
+# ✅ GOOD — from any directory, no venv activation
+sitehost deploy --dry-run
+fish sync
+whip host.sitehost
+
+# ❌ BAD — collides with /usr/bin/host (DNS lookup tool)
+host sites
+uv run python -m host.cli deploy
+```
+
+## Layout
+
+- Package code under **`src/<package>/`**
+- One module per command: `src/<package>/<command>.py` with `main()` and `if __name__ == "__main__"`
+- Top-level CLI: `mkdo host.sitehost -d ~/.local/bin -t global` → **`sitehost`**
+- Subcommands live in `cli.py` via `@cmd` — prefer one top-level command over many `mkdo package.submodule` wrappers unless a service must run standalone (e.g. long-running HTTP server as `host serve`)
+
+## Install a command (global)
+
+After adding a module to an existing project:
+
+```bash
+mkdo host.sitehost -d ~/.local/bin -t global
+```
+
+For a **new project**, add it to `util/global_setup.py` and run `global_setup`.
+
+Project `pyproject.toml` should depend on **`util`** (editable path to `/home/ken/ws/util`).
+
+## Per-project venv (optional)
+
+For isolated dev or dependency experiments only:
+
+```bash
+cd /path/to/project
+uv sync
+mkdo_setup
+mkdo host.sitehost -d .venv/bin
+```
+
+## New commands
+
+```bash
+mkpy mytool
+# move module into src/<package>/<command>.py
+mkdo <package>.<command> -d ~/.local/bin -t global
+```
+
+## Do not
+
+- `python scripts/foo.py` or `uv run python scripts/foo.py`
+- `uv run python -m <package>.<module>` for installed mkdo commands
+- `[project.scripts]` entry points (use mkdo wrappers instead; tesla-fleet-mcp is legacy exception)
+- `#!/usr/bin/env python3` shebangs on command modules

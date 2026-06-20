@@ -2,7 +2,7 @@
 
 ## Shared resources
 
-Workspace index: **`/home/ken/AGENTS.md`**.
+Workspace index: **`/home/ken/ws/AGENTS.md`**.
 
 ## What this project is
 
@@ -20,7 +20,7 @@ Old-school Python CLI utilities deployed via wrapper scripts:
 
 ## Repo
 
-- Path: **`/home/ken/util`**
+- Path: **`/home/ken/ws/util`**
 - GitHub: [kenseehart/util](https://github.com/kenseehart/util)
 
 ## Installation (global editable)
@@ -34,7 +34,7 @@ global_setup    # python -m util.global_setup
 Or manually:
 
 ```bash
-uv pip install -e /home/ken/util --python ~/.local/share/uv/global/bin/python
+uv pip install -e /home/ken/ws/util --python ~/.local/share/uv/global/bin/python
 mkdo_setup
 mkdo mytool -d ~/.local/bin -t global
 ```
@@ -46,6 +46,7 @@ mkdo mytool -d ~/.local/bin -t global
 | `mkpy` | Scaffold a new command module |
 | `mkdo_setup` | Bootstrap whip/mkdo/mkpy/global_setup into global bin |
 | `global_setup` | Install all workspace packages + CLIs (see `global_setup.py`) |
+| `init_workspace` | Symlink workspace config from `util/top_of_workspace` |
 
 After `uv sync` in a **project venv** (optional isolated dev): `uv run python -m util.mkdo_setup` then `mkdo <package> -d .venv/bin`. Prefer global env for daily use.
 
@@ -53,7 +54,12 @@ Reinstall after clone:
 
 ```bash
 global_setup
+init_workspace --force
 ```
+
+## Workspace config (`top_of_workspace`)
+
+Cursor rules, root `AGENTS.md`, and other workspace-level files are versioned under **`top_of_workspace/`**. Symlinks at `/home/ken/ws` are created from **`top_of_workspace.json`**. Secrets stay local (`.cursor/mcp.json` is not symlinked).
 
 ## Conventions
 

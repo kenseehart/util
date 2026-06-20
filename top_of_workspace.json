@@ -1,0 +1,18 @@
+{
+  "workspace": "~/ws",
+  "links": [
+    {"path": "AGENTS.md", "source": "AGENTS.md"},
+    {"path": "ken.code-workspace", "source": "ken.code-workspace"},
+    {"path": "docs/billing-subscriptions.md", "source": "docs/billing-subscriptions.md"},
+    {"path": ".cursor/rules/cli-commands.mdc", "source": "cursor/rules/cli-commands.mdc"},
+    {"path": ".cursor/rules/cli-development.mdc", "source": "cursor/rules/cli-development.mdc"},
+    {"path": ".cursor/rules/fail-fast.mdc", "source": "cursor/rules/fail-fast.mdc"},
+    {"path": ".cursor/rules/report-tool-failures.mdc", "source": "cursor/rules/report-tool-failures.mdc"},
+    {"path": ".cursor/rules/workspace.mdc", "source": "cursor/rules/workspace.mdc"},
+    {"path": ".cursor/rules/zone-identifier.mdc", "source": "cursor/rules/zone-identifier.mdc"}
+  ],
+  "local_only": [
+    ".cursor/mcp.json",
+    ".cursor/plans"
+  ]
+}
