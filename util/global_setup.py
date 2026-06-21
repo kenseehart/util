@@ -25,6 +25,7 @@ EDITABLE_PACKAGES = [
     WORKSPACE / "nfnc",
     WORKSPACE / "tesla",
     WORKSPACE / "cristopoly",
+    WORKSPACE / "bridge",
 ]
 
 # mkdo module → command name (default: leaf module name)
