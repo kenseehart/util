@@ -9,7 +9,8 @@
     {"path": ".cursor/rules/fail-fast.mdc", "source": "cursor/rules/fail-fast.mdc"},
     {"path": ".cursor/rules/report-tool-failures.mdc", "source": "cursor/rules/report-tool-failures.mdc"},
     {"path": ".cursor/rules/workspace.mdc", "source": "cursor/rules/workspace.mdc"},
-    {"path": ".cursor/rules/zone-identifier.mdc", "source": "cursor/rules/zone-identifier.mdc"}
+    {"path": ".cursor/rules/zone-identifier.mdc", "source": "cursor/rules/zone-identifier.mdc"},
+    {"path": ".cursor/rules/next-step.mdc", "source": "cursor/rules/next-step.mdc"}
   ],
   "local_only": [
     ".cursor/mcp.json",

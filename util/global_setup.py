@@ -34,6 +34,7 @@ COMMANDS: list[str | tuple[str, str]] = [
     "compute",
     "util.wsl_link",
     "util.init_workspace",
+    "util.dbserv",
     "host.sitehost",
     "nfnc",
     "cristopoly.fetch_streetview",

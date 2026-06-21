@@ -4,6 +4,8 @@ Multi-project AI development workspace. **Open `/home/ken/ws` in Cursor** (or `k
 
 Open this file at the start of any cross-project session.
 
+**Operational queue:** say **`next step`** in any chat → agent reads [`host/docs/NEXT-STEPS.md`](host/docs/NEXT-STEPS.md).
+
 ## Project map
 
 | Dir | GitHub | Purpose | AGENTS.md |
@@ -83,6 +85,7 @@ Per-project `.venv` dirs are optional (isolated dev); daily use needs no activat
 | `mkdo_setup` | Bootstrap whip/mkdo/mkpy into the active venv |
 | `global_setup` | Install all workspace packages + CLIs into shared global env |
 | `init_workspace` | Symlink workspace Cursor rules and AGENTS.md from `util/top_of_workspace` |
+| `dbserv` | Browse workspace SQLite DBs in Datasette (`dbserv fish`) |
 
 ```bash
 fish sync

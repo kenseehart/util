@@ -1,0 +1,15 @@
+---
+description: "next step" means read host/docs/NEXT-STEPS.md and execute the first Do next item
+alwaysApply: true
+---
+
+# Next step
+
+When the user says **`next step`**, **`continue`**, **`what's next`**, or similar (including a fresh empty chat):
+
+1. Read **`/home/ken/ws/host/docs/NEXT-STEPS.md`** immediately.
+2. Follow **Instructions for agents** in that file.
+3. Execute **only the first item** under **Do next**.
+4. Verify **Done when** with evidence; update the file (move to **Completed**, remove from **Do next**).
+
+Do not ask Ken to paste a prompt. Never store secrets in NEXT-STEPS.md.

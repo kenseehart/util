@@ -14,6 +14,7 @@ Old-school Python CLI utilities deployed via wrapper scripts:
 | `mkdo` | Install a module as an executable in `bin/` |
 | `mkpy` | Scaffold a new command module |
 | `mkdo_setup` | Bootstrap whip/mkdo/mkpy into a venv (`python -m util.mkdo_setup`) |
+| `dbserv` | Browse workspace SQLite DBs in Datasette (`dbserv fish`, `dbserv --list`) |
 | `gmon` | Reactive directory monitor |
 | `stringbreak` | Break debugger on matching output string |
 | `yamster` | Reactive YAML store |
